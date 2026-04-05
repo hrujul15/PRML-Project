@@ -1,0 +1,4 @@
+SOURCES USED FOR REFERENCE
+WEBM to wav: https://stackoverflow.com/questions/69800151/convert-webm-file-to-wav-file-with-python
+Spectrogram using Librosa: https://medium.com/analytics-vidhya/understanding-the-mel-spectrogram-fca2afa2ce53
+STFT, FFT explanation image source: https://www.mathworks.com/help/dsp/ref/dsp.stft.html
