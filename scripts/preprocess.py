@@ -19,11 +19,10 @@ def preprocess():
                 x.append(spectogram)
                 y.append(sample[:sample.find(".")])
     
-    # get string to num maping
+    # get string to num map
     mapping = LabelEncoder()
     y = mapping.fit_transform(y)
     mapping = dict(zip(range(len(mapping.classes_)), mapping.classes_))
     x = np.array(x)
-    
-    
+    print(x.shape)
     return x,y,mapping
