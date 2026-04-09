@@ -16,3 +16,5 @@ From audio files get the genre of the music
 - Priyam Maheshbhai Patel (B24CS1058)
 - Tushar Verma (B24CM1070)
 
+## Running the Predictor
+- For ru

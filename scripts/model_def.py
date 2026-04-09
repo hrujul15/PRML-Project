@@ -1,9 +1,9 @@
 from torch.optim import lr_scheduler
 import torch.nn as nn
 import torch
-class BasicCNN(nn.Module):
+class CNN(nn.Module):
     def __init__(self, num_classes=10):
-        super(BasicCNN, self).__init__()
+        super(CNN, self).__init__()
 
         # FEATURE EXTRACTOR: Learns spatial patterns (edges, textures, shapes)
         self.features = nn.Sequential(

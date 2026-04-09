@@ -1,0 +1,11 @@
+numpy
+pandas
+torch
+librosa
+moviepy
+matplotlib
+scikit-learn
+seaborn
+tqdm
+requests
+python-dotenv

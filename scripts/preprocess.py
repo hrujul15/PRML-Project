@@ -2,6 +2,7 @@ import os
 from spectrogram import generate_spectrogram
 from sklearn.preprocessing import LabelEncoder
 import numpy as np
+import torch
 
 def preprocess():
     data = "data/genres_original"
@@ -25,4 +26,10 @@ def preprocess():
     mapping = dict(zip(range(len(mapping.classes_)), mapping.classes_))
     x = np.array(x)
     print(x.shape)
-    return x,y,mapping
+
+    # convert to pytorch tensor
+    x_tensor = x[:, np.newaxis,:,:]
+    x_tensor = torch.tensor(x_tensor, dtype=torch.float32)
+    y_tensor = torch.tensor(y, dtype=torch.long)
+    x_tensor.shape
+    return x_tensor,y_tensor,mapping
