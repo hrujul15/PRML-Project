@@ -49,7 +49,10 @@ else:
         file = "out_audio.wav"
 
     y, sr = librosa.load(file)  # sr = sample rate
+    
+    #===== FIRST 30S ===
     y = y[: int(sr * 30)]
+    # ===================
 
     # do fft over the audio file and convert output to mel scale
     mel_spect = librosa.feature.melspectrogram(y=y, sr=sr, n_fft=1024, hop_length=512)

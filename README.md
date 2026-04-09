@@ -7,7 +7,7 @@ PRML Project Spring Semester 2025-26
 # Music Genre Classifier
 
 From audio files predict the genre of the music
-
+This model works best for english songs only!
 ---
 
 # Team Members
