@@ -104,5 +104,3 @@ def train():
     test_accuracy = 100 * correct / total
     print("Test Acc", test_accuracy)
     torch.save(model.state_dict(), "model.pth")
-
-train()
