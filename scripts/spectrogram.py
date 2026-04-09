@@ -15,7 +15,7 @@ def generate_spectrogram(file_path):
             y = np.pad(y, (0, int(sr*30) - len(y)))
         y = y[:int(sr*30)]
         # Step 2: do fft over the audio file and convert output to mel scale
-        mel_spect = librosa.feature.melspectrogram(y=y, sr=sr, n_fft=1024, hop_length=1024)
+        mel_spect = librosa.feature.melspectrogram(y=y, sr=sr, n_fft=1024, hop_length=512)
         # # Convert amplitude to decibels so that difference in loudness is distinguishable
         mel_spect = librosa.power_to_db(mel_spect, ref=np.max)
         # getting all values between 0 and 1

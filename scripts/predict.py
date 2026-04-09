@@ -23,7 +23,7 @@ else:
 
     # load model
     loaded_model.load_state_dict(
-        torch.load("model.pth", map_location=torch.device("cpu"))
+        torch.load("model.pth", map_location=torch.device("cpu"), weights_only=True)
     )
 
     loaded_model.eval()
@@ -52,7 +52,7 @@ else:
     y = y[: int(sr * 30)]
 
     # do fft over the audio file and convert output to mel scale
-    mel_spect = librosa.feature.melspectrogram(y=y, sr=sr, n_fft=1024, hop_length=1024)
+    mel_spect = librosa.feature.melspectrogram(y=y, sr=sr, n_fft=1024, hop_length=512)
 
     # COnvert amplitude to decibels so that difference in loudness is distinguishable
     mel_spect = librosa.power_to_db(mel_spect, ref=np.max)
