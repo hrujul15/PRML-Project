@@ -2,7 +2,7 @@ import torch
 from model_def import CNN
 import sys
 import numpy as np
-from moviepy import AudioFileClip
+from pydub import AudioSegment
 import librosa
 import os
 from train import train
@@ -42,16 +42,24 @@ else:
         9: np.str_("rock"),
     }
 
-    # if file is not .wav convert to correct format
-    if ".wav" not in file:
-        clip = AudioFileClip(file)
-        clip.write_audiofile("out_audio.wav")
-        file = "out_audio.wav"
-
-    y, sr = librosa.load(file)  # sr = sample rate
+    # Use pydub to load any format, loop, and find max energy chunk
+    audio = AudioSegment.from_file(file)
+    target_ms = 30 * 1000
+    if len(audio) < target_ms:
+        audio = audio * (target_ms // len(audio) + 1)
+    if len(audio) > target_ms:
+        best_start = 0
+        max_rms = 0
+        for i in range(0, len(audio) - target_ms + 1, 1000):
+            chunk = audio[i:i+target_ms]
+            if chunk.rms > max_rms:
+                max_rms = chunk.rms
+                best_start = i
+        audio = audio[best_start:best_start+target_ms]
+    audio = audio[:target_ms]
     
-    #===== FIRST 30S ===
-    y = y[: int(sr * 30)]
+    audio.export("tmp_audio.wav", format="wav")
+    y, sr = librosa.load("tmp_audio.wav")  # sr = sample rate
     # ===================
 
     # do fft over the audio file and convert output to mel scale

@@ -2,7 +2,7 @@ numpy
 pandas
 torch
 librosa
-moviepy
+pydub
 matplotlib
 scikit-learn
 seaborn
