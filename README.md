@@ -27,3 +27,8 @@ This model works best for english songs only!
 ## Resource used for spectogram generation
 - Spectrogram using Librosa: https://medium.com/analytics-vidhya/understanding-the-mel-spectrogram-fca2afa2ce53
 - STFT, FFT explanation image source: https://www.mathworks.com/help/dsp/ref/dsp.stft.html
+
+---
+
+## Resnet Architecture
+- Resnet wiki: https://en.wikipedia.org/wiki/Residual_neural_network
