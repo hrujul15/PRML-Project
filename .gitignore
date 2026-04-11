@@ -1,6 +1,8 @@
 # dataset folder
 data/
-
+# music file
+*.webm
+out_audio.wav
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]

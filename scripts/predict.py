@@ -1,5 +1,5 @@
 import torch
-from model_def import CNN
+from model_def import ResidualBlock, ResNet
 import sys
 import numpy as np
 from moviepy import AudioFileClip
@@ -15,7 +15,7 @@ if len(sys.argv) == 1:
     print("No file given in input")
 else:
     # load model
-    loaded_model = CNN()
+    loaded_model = ResNet()
 
     # if model not found train model
     if not os.path.exists("model.pth"):

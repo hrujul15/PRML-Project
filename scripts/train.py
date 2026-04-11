@@ -1,4 +1,4 @@
-from model_def import CNN
+from model_def import ResNet, ResidualBlock
 from preprocess import preprocess
 from sklearn.model_selection import train_test_split
 import torch

@@ -4,40 +4,60 @@ import torch
 from torch.optim import lr_scheduler
 
 
-class CNN(nn.Module):
-    def __init__(self, num_classes=10):
-        super(CNN, self).__init__()
+class ResidualBlock(nn.Module):
+    def __init__(self, in_channels, out_channels, stride=1):
+        super(ResidualBlock, self).__init__()
 
-        # FEATURE EXTRACTOR: Learns spatial patterns (edges, textures, shapes)
-        self.features = nn.Sequential(
-            # Layer 1: Conv -> ReLU -> Pool
-            # Input: 3 channels (RGB), 32x32 matrix. Output: 16 channels, 32x32
-            nn.Conv2d(in_channels=1, out_channels=16, kernel_size=4, padding=2),
-            nn.BatchNorm2d(16),
+        self.conv1 = nn.Sequential(
+            nn.Conv2d(in_channels, out_channels,3, stride, 1),
+            nn.BatchNorm2d(out_channels),
             nn.ReLU(inplace=True),
-            # MaxPool reduces dimensions by half. Output: 16 channels, 16x16 matrix
-            nn.MaxPool2d(kernel_size=5, stride=5),
-            # Layer 2: Conv -> ReLU -> Pool
-            # Input: 16 channels, 16x16. Output: 32 channels, 16x16
-            nn.Conv2d(in_channels=16, out_channels=32, kernel_size=4, padding=2),
-            nn.BatchNorm2d(32),
-            nn.ReLU(inplace=True),
-            # Output: 32 channels, 8x8 matrix
-            nn.MaxPool2d(kernel_size=5, stride=5),
         )
 
-        # CLASSIFIER: Takes the extracted features and makes a decision
-        self.classifier = nn.Sequential(
-            nn.Linear(8160, 256),
-            nn.ReLU(inplace=True),
-            nn.Dropout(
-                0.67
-            ),  # Drops 67% of neurons randomly to prevent memorization (overfitting)
-            nn.Linear(256, num_classes),
+        self.conv2 = nn.Sequential(
+            nn.Conv2d(out_channels, out_channels, 3, 1, 1),
+            nn.BatchNorm2d(out_channels),
+        )
+
+        self.relu = nn.ReLU(inplace=True)
+
+        self.shortcut = nn.Sequential(
+            nn.Conv2d(in_channels, out_channels, 1, stride, bias=False),
+            nn.BatchNorm2d(out_channels)
         )
 
     def forward(self, x):
-        x = self.features(x)  # 1. Pass through convolutional layers
-        x = torch.flatten(x, 1)  # 2. Flatten from 2D grids into a 1D vector
-        x = self.classifier(x)  # 3. Pass through dense/linear layers
-        return x
+        shortcut_layer = self.shortcut(x)
+        out = self.conv1(x)
+        out = self.conv2(out) + shortcut_layer
+        out = self.relu(out)
+        return out
+
+class ResNet(nn.Module):
+    def __init__(self, num_classes=10):
+        super(ResNet, self).__init__()
+
+        self.conv1 = nn.Sequential(
+            nn.Conv2d(in_channels=1, out_channels=16, kernel_size=4, padding=2),
+            nn.BatchNorm2d(16),
+            nn.ReLU(inplace=True),
+            nn.MaxPool2d(kernel_size=3, stride=3),
+        )
+
+        self.layer1 = ResidualBlock(16, 32)
+        self.layer2 = ResidualBlock(32, 64)
+        self.layer3 = ResidualBlock(64, 128)
+
+        self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
+        self.fully_connected = nn.Linear(128, num_classes)
+
+    def forward(self, x):
+        out = self.conv1(x)
+        out = self.layer1(out)
+        out = self.layer2(out)
+        out = self.layer3(out)
+
+        out = self.avgpool(out)
+        out = torch.flatten(out, 1)
+        out = self.fully_connected(out)
+        return out
