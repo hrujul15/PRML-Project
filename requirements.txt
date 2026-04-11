@@ -9,3 +9,4 @@ seaborn
 tqdm
 requests
 python-dotenv
+joblib
