@@ -41,8 +41,8 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 ### 3. Install dependencies
 pip install -r requirements.txt
 
-### 4. Run the program
-python scripts/predict.py "Path_to_music_file"
+### 4. Run the program (place the file in music folder to avoid path related issues)
+python scripts/predict.py "music/file_name"
 
 ---
 
