@@ -8,6 +8,7 @@ class ResidualBlock(nn.Module):
     def __init__(self, in_channels, out_channels, stride=1):
         super(ResidualBlock, self).__init__()
 
+
         self.conv1 = nn.Sequential(
             nn.Conv2d(in_channels, out_channels,3, stride, 1),
             nn.BatchNorm2d(out_channels),
@@ -21,6 +22,7 @@ class ResidualBlock(nn.Module):
 
         self.relu = nn.ReLU(inplace=True)
 
+# main shortuct layer that gives H(x)  = F(x) + x
         self.shortcut = nn.Sequential(
             nn.Conv2d(in_channels, out_channels, 1, stride, bias=False),
             nn.BatchNorm2d(out_channels)
@@ -43,11 +45,12 @@ class ResNet(nn.Module):
             nn.ReLU(inplace=True),
             nn.MaxPool2d(kernel_size=3, stride=3),
         )
-
+# residual layers from here
         self.layer1 = ResidualBlock(16, 32)
         self.layer2 = ResidualBlock(32, 64)
         self.layer3 = ResidualBlock(64, 128)
 
+# take avg over the matrix img for all channels, then i pass the 128 channel data to fc layer
         self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
         self.fully_connected = nn.Linear(128, num_classes)
 

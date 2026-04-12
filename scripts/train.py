@@ -37,7 +37,7 @@ def train():
     testloader = DataLoader(testdataset, batch_size=4, shuffle=False)
 
     max_val_acc = -1
-    model = CNN()
+    model = ResNet()
 
     # training
     model = model.to("cpu")
